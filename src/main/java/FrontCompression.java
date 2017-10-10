@@ -44,8 +44,15 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
+        String[] words = corpus.split("\n");
+        String compressedString = "0 " + words[0] + "\n";
 
-        return "";
+        for (int i = 1; i < words.length; i++) {
+            int prefixLength = longestPrefix(words[i], words[i - 1]);
+            compressedString += prefixLength + " " + words[i].substring(prefixLength) + "\n";
+        }
+
+        return compressedString;
     }
 
     /**
@@ -64,11 +71,19 @@ public class FrontCompression {
             return "";
         }
 
-        /*
-         * Complete this function.
-         */
+        String[] words = corpus.split("\n");
+        String lastWord = "";
+        String decompressed = "";
 
-        return "";
+        for (int i = 0; i < words.length; i++) {
+            String[] compressedWord = words[i].split(" ", 2);
+            int prefixLength = Integer.valueOf(compressedWord[0]);
+            String prefix = lastWord.substring(0, prefixLength);
+            lastWord = prefix + compressedWord[1];
+            decompressed += lastWord + "\n";
+        }
+
+        return decompressed;
     }
 
     /**
@@ -79,10 +94,15 @@ public class FrontCompression {
      * @return the length of the common prefix between the two strings
      */
     private static int longestPrefix(final String firstString, final String secondString) {
-        /*
-         * Complete this function.
-         */
-        return 0;
+
+        int prefixLength;
+        for (prefixLength = 0; prefixLength < firstString.length()
+                && prefixLength < secondString.length(); prefixLength++) {
+            if (firstString.charAt(prefixLength) != secondString.charAt(prefixLength)) {
+                break;
+            }
+        }
+        return prefixLength;
     }
 
     /**
